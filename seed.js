@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const Product = require("./models/Product");
 const fs = require("fs");
 const path = require("path");
-require("dotenv").config();
+require("dotenv").config({ encoding: "utf16le" });
 
 const seedProducts = [
   {
@@ -154,38 +154,39 @@ const seedProducts = [
   },
 ];
 
+const Grid = require("gridfs-stream");
+
 const seedDB = async () => {
   try {
     await mongoose.connect(process.env.MONGO_URI);
+    console.log("Connected to MongoDB");
 
     await Product.deleteMany({});
+    console.log("Deleted existing products");
 
     for (const productData of seedProducts) {
+      console.log(`Seeding product: ${productData.name}`);
       if (fs.existsSync(productData.imagePath)) {
-        const imageBuffer = fs.readFileSync(productData.imagePath);
-        const filename = path.basename(productData.imagePath);
-
-        // For now, store image as base64 string instead of GridFS due to compatibility issues
-        const base64Image = `data:image/jpeg;base64,${imageBuffer.toString(
-          "base64"
-        )}`;
-
-        // Create product
+        console.log(`Image exists for ${productData.name}`);
+        // For now, create product without image since GridFS is complex
         const product = new Product({
           name: productData.name,
           price: productData.price,
-          image: base64Image,
+          image: null, // No image for now
           description: productData.description,
         });
 
         await product.save();
+        console.log(`Saved product: ${productData.name}`);
+      } else {
+        console.log(`Image not found for ${productData.name}, skipping`);
       }
     }
 
     console.log("Database seeded!");
     process.exit();
   } catch (error) {
-    console.log(error);
+    console.log("Error:", error);
     process.exit(1);
   }
 };
