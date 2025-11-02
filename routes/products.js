@@ -2,6 +2,7 @@ const express = require("express");
 const multer = require("multer");
 const Product = require("../models/Product");
 const mongoose = require("mongoose");
+const { ObjectId } = require("mongodb");
 
 const router = express.Router();
 
@@ -65,9 +66,7 @@ router.get("/image/:id", async (req, res) => {
     const { id } = req.params;
 
     // Find the file in GridFSBucket
-    const files = await bucket
-      .find({ _id: new mongoose.Types.ObjectId(id) })
-      .toArray();
+    const files = await bucket.find({ _id: new ObjectId(id) }).toArray();
     if (!files || files.length === 0) {
       return res.status(404).json({ message: "Image not found" });
     }
