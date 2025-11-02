@@ -12,28 +12,27 @@ const upload = multer({ storage });
 // POST /api/products/upload - Upload image and create product
 router.post("/upload", upload.single("image"), async (req, res) => {
   try {
-    const gfs = req.app.locals.gfs;
+    const bucket = req.app.locals.bucket;
     const { name, price, description } = req.body;
 
     if (!req.file) {
       return res.status(400).json({ message: "No image file provided" });
     }
 
-    // Create a write stream to GridFS
-    const writestream = gfs.createWriteStream({
-      filename: req.file.originalname,
-      content_type: req.file.mimetype,
+    // Create a write stream to GridFSBucket
+    const uploadStream = bucket.openUploadStream(req.file.originalname, {
+      contentType: req.file.mimetype,
     });
 
-    writestream.write(req.file.buffer);
-    writestream.end();
+    uploadStream.write(req.file.buffer);
+    uploadStream.end();
 
-    writestream.on("close", async (file) => {
+    uploadStream.on("finish", async () => {
       // Create product with GridFS file ID
       const product = new Product({
         name,
         price: parseFloat(price),
-        image: file._id,
+        image: uploadStream.id,
         description,
       });
 
@@ -41,7 +40,7 @@ router.post("/upload", upload.single("image"), async (req, res) => {
       res.status(201).json(product);
     });
 
-    writestream.on("error", (error) => {
+    uploadStream.on("error", (error) => {
       res.status(500).json({ message: error.message });
     });
   } catch (error) {
@@ -59,27 +58,32 @@ router.get("/", async (req, res) => {
   }
 });
 
-// GET /api/products/image/:id - Serve image from GridFS
+// GET /api/products/image/:id - Serve image from GridFSBucket
 router.get("/image/:id", async (req, res) => {
   try {
-    const gfs = req.app.locals.gfs;
+    const bucket = req.app.locals.bucket;
     const { id } = req.params;
 
-    // Find the file in GridFS
-    gfs.files.findOne({ _id: mongoose.Types.ObjectId(id) }, (err, file) => {
-      if (err || !file) {
-        return res.status(404).json({ message: "Image not found" });
-      }
+    // Find the file in GridFSBucket
+    const files = await bucket
+      .find({ _id: new mongoose.Types.ObjectId(id) })
+      .toArray();
+    if (!files || files.length === 0) {
+      return res.status(404).json({ message: "Image not found" });
+    }
 
-      // Check if file is an image
-      if (file.contentType.startsWith("image/")) {
-        // Create read stream
-        const readstream = gfs.createReadStream(file._id);
-        readstream.pipe(res);
-      } else {
-        res.status(400).json({ message: "Not an image" });
-      }
-    });
+    const file = files[0];
+
+    // Check if file is an image
+    if (file.contentType.startsWith("image/")) {
+      // Set content type header
+      res.set("Content-Type", file.contentType);
+      // Create read stream
+      const downloadStream = bucket.openDownloadStream(file._id);
+      downloadStream.pipe(res);
+    } else {
+      res.status(400).json({ message: "Not an image" });
+    }
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

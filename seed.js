@@ -154,12 +154,15 @@ const seedProducts = [
   },
 ];
 
-const Grid = require("gridfs-stream");
-
 const seedDB = async () => {
   try {
     await mongoose.connect(process.env.MONGO_URI);
     console.log("Connected to MongoDB");
+
+    // Initialize GridFSBucket
+    const bucket = new mongoose.mongo.GridFSBucket(mongoose.connection.db, {
+      bucketName: "uploads",
+    });
 
     await Product.deleteMany({});
     console.log("Deleted existing products");
@@ -168,11 +171,34 @@ const seedDB = async () => {
       console.log(`Seeding product: ${productData.name}`);
       if (fs.existsSync(productData.imagePath)) {
         console.log(`Image exists for ${productData.name}`);
-        // For now, create product without image since GridFS is complex
+
+        // Read image file
+        const imageBuffer = fs.readFileSync(productData.imagePath);
+        const filename = path.basename(productData.imagePath);
+
+        // Upload to GridFSBucket using promise
+        const file = await new Promise((resolve, reject) => {
+          const uploadStream = bucket.openUploadStream(filename, {
+            contentType: "image/jpeg",
+          });
+
+          uploadStream.on("finish", () => {
+            console.log(
+              `Uploaded image for ${productData.name}, file ID: ${uploadStream.id}`
+            );
+            resolve({ _id: uploadStream.id });
+          });
+
+          uploadStream.on("error", reject);
+          uploadStream.write(imageBuffer);
+          uploadStream.end();
+        });
+
+        // Create product with GridFS file ID
         const product = new Product({
           name: productData.name,
           price: productData.price,
-          image: null, // No image for now
+          image: file._id,
           description: productData.description,
         });
 

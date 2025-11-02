@@ -1,7 +1,6 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
-const Grid = require("gridfs-stream");
 require("dotenv").config({ encoding: "utf16le" });
 
 const app = express();
@@ -17,10 +16,11 @@ mongoose.connect(process.env.MONGO_URI);
 mongoose.connection.once("open", () => {
   console.log("MongoDB connected");
 
-  // Initialize GridFS
-  const gfs = Grid(mongoose.connection.db, mongoose.mongo);
-  gfs.collection("uploads");
-  app.locals.gfs = gfs;
+  // Initialize GridFSBucket
+  const bucket = new mongoose.mongo.GridFSBucket(mongoose.connection.db, {
+    bucketName: "uploads",
+  });
+  app.locals.bucket = bucket;
 });
 
 // Routes
