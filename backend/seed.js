@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const Product = require("./models/Product");
 const fs = require("fs");
 const path = require("path");
-require("dotenv").config();
+require("dotenv").config({ encoding: "utf16le" });
 
 const seedProducts = [
   {
@@ -157,35 +157,62 @@ const seedProducts = [
 const seedDB = async () => {
   try {
     await mongoose.connect(process.env.MONGO_URI);
+    console.log("Connected to MongoDB");
+
+    // Initialize GridFSBucket
+    const bucket = new mongoose.mongo.GridFSBucket(mongoose.connection.db, {
+      bucketName: "uploads",
+    });
 
     await Product.deleteMany({});
+    console.log("Deleted existing products");
 
     for (const productData of seedProducts) {
+      console.log(`Seeding product: ${productData.name}`);
       if (fs.existsSync(productData.imagePath)) {
+        console.log(`Image exists for ${productData.name}`);
+
+        // Read image file
         const imageBuffer = fs.readFileSync(productData.imagePath);
         const filename = path.basename(productData.imagePath);
 
-        // For now, store image as base64 string instead of GridFS due to compatibility issues
-        const base64Image = `data:image/jpeg;base64,${imageBuffer.toString(
-          "base64"
-        )}`;
+        // Upload to GridFSBucket using promise
+        const file = await new Promise((resolve, reject) => {
+          const uploadStream = bucket.openUploadStream(filename, {
+            contentType: "image/jpeg",
+          });
 
-        // Create product
+          uploadStream.on("finish", () => {
+            console.log(
+              `Uploaded image for ${productData.name}, file ID: ${uploadStream.id}`
+            );
+            resolve({ _id: uploadStream.id });
+          });
+
+          uploadStream.on("error", reject);
+          uploadStream.write(imageBuffer);
+          uploadStream.end();
+        });
+
+        // Create product with GridFS file ID
         const product = new Product({
           name: productData.name,
           price: productData.price,
-          image: base64Image,
+          image: file._id,
           description: productData.description,
         });
 
         await product.save();
+        console.log(`Saved product: ${productData.name}`);
+      } else {
+        console.log(`Image not found for ${productData.name}, skipping`);
       }
     }
 
     console.log("Database seeded!");
     process.exit();
   } catch (error) {
-    console.log(error);
+    console.log("Error:", error);
     process.exit(1);
   }
 };

@@ -11,8 +11,8 @@ const productSchema = new mongoose.Schema(
       required: true,
     },
     image: {
-      type: String, // Base64 encoded image data
-      required: true,
+      type: mongoose.Schema.Types.ObjectId,
+      required: false,
     },
     description: {
       type: String,
