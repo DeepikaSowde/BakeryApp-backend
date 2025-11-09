@@ -14,3 +14,7 @@ services:
           type: web
           name: bakeryapp-backend
           property: port
+      - key: RAZORPAY_KEY_ID
+        value: rzp_test_RcMmnysFvW4rZD
+      - key: RAZORPAY_KEY_SECRET
+        value: wKfBAymLddrv1B3WW1RVG1E0
