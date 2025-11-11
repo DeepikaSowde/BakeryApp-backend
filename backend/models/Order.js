@@ -3,8 +3,9 @@ const mongoose = require("mongoose");
 const orderSchema = new mongoose.Schema(
   {
     userId: {
-      type: String,
-      required: true, // Placeholder for user ID; can be updated when auth is added
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
     },
     items: [
       {

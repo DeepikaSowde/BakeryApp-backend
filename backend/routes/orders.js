@@ -17,7 +17,7 @@ const router = express.Router();
 const authenticate = (req, res, next) => {
   // TODO: Implement JWT verification when auth is added
   // For now, use a placeholder userId
-  req.userId = req.body.userId || "guest-user"; // Placeholder
+  req.userId = req.body.userId || req.header("userId") || "guest-user"; // Placeholder
   next();
 };
 
