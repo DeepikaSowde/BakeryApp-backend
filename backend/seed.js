@@ -6,147 +6,127 @@ require("dotenv").config({ encoding: "utf16le" });
 
 const seedProducts = [
   {
-    name: "Chocolate Cake",
-    price: 25.99,
+    name: "Coconut Cookies",
+    price: 300,
     imagePath:
       "C:/Users/kaviv/OneDrive/Desktop/mythilipic/WhatsApp Image 2025-09-16 at 16.53.39.jpeg",
     description: "Delicious chocolate cake with rich frosting.",
   },
   {
-    name: "Croissant",
-    price: 3.5,
+    name: "Kitkat Cake",
+    price: 300,
     imagePath:
       "C:/Users/kaviv/OneDrive/Desktop/mythilipic/WhatsApp Image 2025-09-16 at 16.54.33.jpeg",
     description: "Flaky and buttery croissant.",
   },
   {
-    name: "Blueberry Muffin",
-    price: 4.0,
+    name: "Mabel Cookies",
+    price: 400,
     imagePath:
       "C:/Users/kaviv/OneDrive/Desktop/mythilipic/WhatsApp Image 2025-09-16 at 16.55.11.jpeg",
     description: "Fresh blueberry muffin.",
   },
   {
-    name: "Vanilla Cupcake",
-    price: 3.25,
+    name: "Tutti Frutti Cake",
+    price: 300,
     imagePath:
       "C:/Users/kaviv/OneDrive/Desktop/mythilipic/WhatsApp Image 2025-09-16 at 16.55.48.jpeg",
     description: "Classic vanilla cupcake with buttercream.",
   },
   {
-    name: "Strawberry Tart",
-    price: 18.99,
+    name: "Hot Milk Tea Cake",
+    price: 300,
     imagePath:
       "C:/Users/kaviv/OneDrive/Desktop/mythilipic/WhatsApp Image 2025-09-16 at 16.56.33.jpeg",
     description: "Fresh strawberry tart with custard filling.",
   },
   {
-    name: "Chocolate Chip Cookies",
-    price: 2.5,
+    name: "Mutta mithai",
+    price: 250,
     imagePath:
       "C:/Users/kaviv/OneDrive/Desktop/mythilipic/WhatsApp Image 2025-09-16 at 16.57.28.jpeg",
     description: "Chewy chocolate chip cookies.",
   },
   {
-    name: "Red Velvet Cake",
-    price: 28.99,
-    imagePath:
-      "C:/Users/kaviv/OneDrive/Desktop/mythilipic/WhatsApp Image 2025-09-16 at 16.58.11.jpeg",
-    description: "Moist red velvet cake with cream cheese frosting.",
-  },
-  {
-    name: "Apple Pie",
-    price: 15.99,
+    name: "Butter Cookies",
+    price: 300,
     imagePath:
       "C:/Users/kaviv/OneDrive/Desktop/mythilipic/WhatsApp Image 2025-09-16 at 16.58.30.jpeg",
     description: "Traditional apple pie with cinnamon.",
   },
   {
-    name: "Banana Bread",
+    name: "Oats Cookies",
     price: 8.99,
     imagePath:
       "C:/Users/kaviv/OneDrive/Desktop/mythilipic/WhatsApp Image 2025-09-16 at 16.59.07.jpeg",
     description: "Moist banana bread with walnuts.",
   },
   {
-    name: "Lemon Bars",
-    price: 4.5,
+    name: "Ragi nuts cookies",
+    price: 300,
     imagePath:
       "C:/Users/kaviv/OneDrive/Desktop/mythilipic/WhatsApp Image 2025-09-16 at 16.59.33.jpeg",
     description: "Tangy lemon bars with powdered sugar.",
   },
   {
-    name: "Pound Cake",
-    price: 12.99,
+    name: "Cheese Cake",
+    price: 300,
     imagePath:
       "C:/Users/kaviv/OneDrive/Desktop/mythilipic/WhatsApp Image 2025-09-16 at 17.00.18.jpeg",
     description: "Rich and dense pound cake.",
   },
   {
-    name: "Brownies",
-    price: 3.75,
+    name: "Ragi Brownie",
+    price: 300,
     imagePath:
       "C:/Users/kaviv/OneDrive/Desktop/mythilipic/WhatsApp Image 2025-09-16 at 17.01.41.jpeg",
     description: "Fudgy chocolate brownies.",
   },
   {
-    name: "Cheesecake",
-    price: 22.99,
+    name: "Birthday cake",
+    price: 200,
     imagePath:
       "C:/Users/kaviv/OneDrive/Desktop/mythilipic/WhatsApp Image 2025-09-16 at 17.02.33.jpeg",
     description: "Creamy cheesecake with berry topping.",
   },
+
   {
-    name: "Danish Pastry",
-    price: 4.25,
-    imagePath:
-      "C:/Users/kaviv/OneDrive/Desktop/mythilipic/WhatsApp Image 2025-09-16 at 17.03.23.jpeg",
-    description: "Flaky Danish pastry with fruit filling.",
-  },
-  {
-    name: "Carrot Cake",
-    price: 26.99,
+    name: "Red Velvet Cake",
+    price: 300,
     imagePath:
       "C:/Users/kaviv/OneDrive/Desktop/mythilipic/WhatsApp Image 2025-09-16 at 17.03.36.jpeg",
     description: "Spiced carrot cake with cream cheese frosting.",
   },
   {
-    name: "Scones",
-    price: 3.99,
-    imagePath:
-      "C:/Users/kaviv/OneDrive/Desktop/mythilipic/WhatsApp Image 2025-09-16 at 17.04.19.jpeg",
-    description: "Buttery scones perfect with tea.",
-  },
-  {
-    name: "Tiramisu",
-    price: 19.99,
+    name: "Chocolate cake",
+    price: 200,
     imagePath:
       "C:/Users/kaviv/OneDrive/Desktop/mythilipic/WhatsApp Image 2025-09-16 at 17.04.31.jpeg",
     description: "Classic Italian tiramisu dessert.",
   },
   {
-    name: "Macarons",
-    price: 2.0,
+    name: "Peanut Cookies",
+    price: 200,
     imagePath:
       "C:/Users/kaviv/OneDrive/Desktop/mythilipic/WhatsApp Image 2025-09-16 at 17.05.49.jpeg",
     description: "Delicate French macarons in various flavors.",
   },
   {
-    name: "Bread Pudding",
-    price: 9.99,
+    name: "Ragi Chocochip Cookies",
+    price: 500,
     imagePath:
       "C:/Users/kaviv/OneDrive/Desktop/mythilipic/WhatsApp Image 2025-09-16 at 17.06.14.jpeg",
     description: "Warm bread pudding with vanilla sauce.",
   },
   {
-    name: "Cinnamon Rolls",
-    price: 5.5,
+    name: "Pizza",
+    price: 900,
     imagePath:
       "C:/Users/kaviv/OneDrive/Desktop/mythilipic/WhatsApp Image 2025-09-16 at 17.06.35.jpeg",
     description: "Soft cinnamon rolls with icing.",
   },
   {
-    name: "Fruit Tart",
+    name: "wheat Donut",
     price: 16.99,
     imagePath:
       "C:/Users/kaviv/OneDrive/Desktop/mythilipic/WhatsApp Image 2025-09-16 at 17.07.23.jpeg",
