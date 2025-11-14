@@ -1,15 +1,8 @@
 const express = require("express");
 const NotificationPreference = require("../models/NotificationPreference");
+const authenticate = require("../middleware/auth");
 
 const router = express.Router();
-
-// Middleware to verify JWT token (placeholder - will be replaced with actual auth middleware)
-const authenticate = (req, res, next) => {
-  // TODO: Implement JWT verification when auth is added
-  // For now, use a placeholder userId
-  req.userId = req.header("userId") || req.body.userId || "guest-user"; // Placeholder
-  next();
-};
 
 // GET /api/notifications/preferences - Get user's notification preferences
 router.get("/preferences", authenticate, async (req, res) => {

@@ -1,16 +1,9 @@
 const express = require("express");
 const Favorite = require("../models/Favorite");
 const Product = require("../models/Product");
+const authenticate = require("../middleware/auth");
 
 const router = express.Router();
-
-// Middleware to verify JWT token (placeholder - will be replaced with actual auth middleware)
-const authenticate = (req, res, next) => {
-  // TODO: Implement JWT verification when auth is added
-  // For now, use a placeholder userId
-  req.userId = req.header("userId") || req.body.userId || "guest-user"; // Placeholder
-  next();
-};
 
 // GET /api/favorites - Get user's favorites with product details
 router.get("/", authenticate, async (req, res) => {

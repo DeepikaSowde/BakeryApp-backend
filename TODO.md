@@ -37,7 +37,7 @@
 
 ## Authentication
 - [x] Install bcryptjs and jsonwebtoken dependencies
-- [ ] Implement JWT authentication middleware
+- [x] Implement JWT authentication middleware
 - [x] Add authentication routes (register, login)
 
 ## Frontend Updates
@@ -48,7 +48,7 @@
 - [ ] Update FavoritesScreen.tsx to load/save favorites
 - [ ] Update NotificationsScreen.tsx to load/save preferences
 - [ ] Update CartContext.tsx to sync with database
-- [ ] Update api.ts constants with new endpoints
+- [x] Update api.ts constants with new endpoints
 
 ## Testing
 - [ ] Test all new API endpoints
